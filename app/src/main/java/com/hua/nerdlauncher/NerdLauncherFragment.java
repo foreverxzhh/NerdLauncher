@@ -3,6 +3,7 @@ package com.hua.nerdlauncher;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Collections;
@@ -55,10 +57,12 @@ public class NerdLauncherFragment extends Fragment {
 
     private class ActivityHolder extends RecyclerView.ViewHolder {
         private TextView mNameTextView;
+        private ImageView mIconImageView;
 
         public ActivityHolder(@NonNull View itemView) {
             super(itemView);
-            mNameTextView = (TextView) itemView;
+            mNameTextView = itemView.findViewById(android.R.id.text1);
+            mIconImageView = itemView.findViewById(android.R.id.icon);
         }
     }
 
@@ -74,7 +78,7 @@ public class NerdLauncherFragment extends Fragment {
         @Override
         public ActivityHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(android.R.layout.simple_list_item_1, viewGroup, false);
+            View view = layoutInflater.inflate(android.R.layout.activity_list_item, viewGroup, false);
             return new ActivityHolder(view);
         }
 
@@ -83,6 +87,7 @@ public class NerdLauncherFragment extends Fragment {
             final ResolveInfo resolveInfo = mActivities.get(i);
             PackageManager packageManager = getActivity().getPackageManager();
             viewHolder.mNameTextView.setText(resolveInfo.loadLabel(packageManager).toString());
+            viewHolder.mIconImageView.setImageDrawable(resolveInfo.loadIcon(packageManager));
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
